@@ -29,10 +29,10 @@ public class Movie {
     @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     
-
+    @OneToMany 
     private Long movie_id;
 
-    
+   
     private String movie_title;
     private int movie_year_released; 
     private String movei_genre;
