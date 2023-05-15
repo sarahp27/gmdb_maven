@@ -32,7 +32,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn (name="reviewer_id")
-    private IReviewerRepo reviewer_id; 
+    private Reviewer reviewer_id; 
     private String review_text;
     private Date date_time;
 
