@@ -32,5 +32,6 @@ public void postMethodName(@RequestBody  Movie movi) {
     public List<Movie>getAllMovies(){
         return movierepo.findAll();
     }
+     
     
 }
