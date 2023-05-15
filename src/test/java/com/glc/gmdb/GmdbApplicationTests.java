@@ -3,14 +3,14 @@ package com.glc.gmdb;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.glc.gmdb.Modal.Movie;
+import com.glc.gmdb.Model.Movie;
 
 @SpringBootTest
 class GmdbApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Movie movie = new Movie( (long) 1,"prey", 2019, "Action",2); 
+	
 
 
 	}

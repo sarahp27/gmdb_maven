@@ -1,4 +1,4 @@
-package com.glc.gmdb.Modal;
+package com.glc.gmdb.Model;
 
 
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
@@ -26,15 +25,12 @@ import lombok.Setter;
 public class Movie {
 
     @Id  
-    @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
-    @OneToMany 
-    private Long movie_id;
-
+    private long id;
+    private Long movie_id; //will use as a foreign key 
    
     private String movie_title;
     private int movie_year_released; 
-    private String movei_genre;
+    private String movie_genre;
     private int movie_runtime;
 }
