@@ -3,7 +3,7 @@ package com.glc.gmdb;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.glc.gmdb.Model.Movie;
+// import com.glc.gmdb.Model.Movie;
 
 @SpringBootTest
 class GmdbApplicationTests {

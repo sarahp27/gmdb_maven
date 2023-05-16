@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.glc.gmdb.Model.Movie;
+import com.glc.gmdb.Model.Movies;
 import com.glc.gmdb.Repository.IMovieRepository;
-
-import lombok.NoArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,12 +23,12 @@ public class MovieController  {
 
   
 @PostMapping("/post")
-public void postMethodName(@RequestBody  Movie movi) {
+public void postMethodName(@RequestBody  Movies movi) {
        movierepo.save(movi);
 }
 @GetMapping("/all")
-    public List<Movie>getAllMovies(){
-        return movierepo.findAll();
+    public List<Movies>getAllMovies(){
+        return (List<Movies>) movierepo.findAll();
     }
      
     

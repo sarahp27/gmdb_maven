@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.glc.gmdb.Model.Review;
+import com.glc.gmdb.Model.Reviews;
 import com.glc.gmdb.Repository.IReviewRepo;
 
 @RestController
@@ -18,7 +18,7 @@ public class ReviewController {
 
 
     @PostMapping("/post")
-    public void postMethodName(@RequestBody Review review) {
+    public void postMethodName(@RequestBody Reviews review) {
         reviewRepository.save(review);
  }
 

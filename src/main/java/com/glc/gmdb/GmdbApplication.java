@@ -57,8 +57,8 @@ public class GmdbApplication {
     //    I can impersonate a reviewer and do any of the things they can do
     //    so that I can help confused reviewers.
 
-	@Test
-	public void contextLoads() {
-	}
+	// @Test
+	// public void contextLoads() {
+	// }
 
 }
