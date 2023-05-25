@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Reviews {
 
     @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long  id;
 
     @ManyToOne

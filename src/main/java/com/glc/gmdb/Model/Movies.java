@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Movies {
 
     @Id  
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // private Long movie_id; //will use as a foreign key 
    

@@ -23,11 +23,11 @@ public class MovieController  {
 
   
 @PostMapping("/post")
-public void postMethodName(@RequestBody  Movies movi) {
-       movierepo.save(movi);
+public void postMethodName(@RequestBody  Movies movie) {
+       movierepo.save(movie);
 }
 @GetMapping("/all")
-    public List<Movies>getAllMovies(){
+    public List<Movies> getAllMovies(){
         return (List<Movies>) movierepo.findAll();
     }
      
