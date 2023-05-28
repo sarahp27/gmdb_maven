@@ -2,6 +2,8 @@ package com.glc.gmdb.Model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,11 +30,12 @@ public class Reviews {
 
     @ManyToOne
     @JoinColumn(name ="movie_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Movies movie_id;
 
-    // @ManyToOne
-    // @JoinColumn(name="reviewer_id")
-    // private Reviewers reviewer_id; 
+    @ManyToOne
+    @JoinColumn(name="reviewer_id")
+    private User reviewer_id; 
 
     private String review_text;
     private Date date_time;
@@ -40,6 +43,15 @@ public class Reviews {
     public Reviews(String review_text, Date date_time){
         this.review_text=review_text;
         this.date_time=date_time;
+    }
+
+    public void setReviewer(User user) {
+    }
+
+    public void setMovies(Movies movies) {
+    }
+
+    public void setDate_time(String string) {
     }
 
   

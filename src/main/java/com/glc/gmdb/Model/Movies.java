@@ -1,18 +1,20 @@
 package com.glc.gmdb.Model;
 
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+// @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 // @Table(name = "movies")
@@ -23,9 +25,25 @@ public class Movies {
     private Long id;
     // private Long movie_id; //will use as a foreign key 
    
-    
-    private String movie_title;
-    private int movie_year_released; 
-    private String movie_genre;
-    private int movie_runtime;
+    @Column(nullable = false)
+    private String movieTitle;
+
+    @Column(nullable = false)
+    private int movieReleased; 
+
+    @Column(nullable = false)
+    private String genre;
+
+    @Column(nullable = false)
+    private int runtime;
+
+    @OneToMany(mappedBy = "movies")
+    private List<Reviews> reviews;
+
+    public Movies(String movieTitle, int movieReleased, String genre, int runtime){
+        this.movieTitle=movieTitle;
+        this.movieReleased=movieReleased;
+        this.genre=genre;
+        this.runtime=runtime;
+    }   
 }

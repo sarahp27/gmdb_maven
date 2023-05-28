@@ -1,18 +1,43 @@
 package com.glc.gmdb;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.glc.gmdb.Controller.MovieController;
+import com.glc.gmdb.Controller.ReviewerController;
+import com.glc.gmdb.Repository.IMovieRepository;
+import com.glc.gmdb.Repository.IReviewRepo;
+import com.glc.gmdb.Repository.IUserRepo;
 
 // import com.glc.gmdb.Model.Movie;
 
 @SpringBootTest
 class GmdbApplicationTests {
 
+    private MockMvc mvc2;
+
+    @Mock
+    private IMovieRepository movieRepository;
+
+    @Mock
+    private IUserRepo reviewerRepository;
+
+    @Mock 
+    private IReviewRepo reviewsRepository;
+
+
+    @InjectMocks
+    private ReviewerController reviewerController;
+
+    @InjectMocks
+    private MovieController movieController;
+
+
 	@Test
 	void contextLoads() {
-	
-
-
 	}
 // Stories for this project are shown below in order of value, with the highest value listed first.
     // This microservice will contain the CRUD operations required to interact with the GMDB movie database.
