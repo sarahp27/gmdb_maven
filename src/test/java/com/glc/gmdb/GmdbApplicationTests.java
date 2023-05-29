@@ -2,8 +2,12 @@ package com.glc.gmdb;
 
 import static org.mockito.Mockito.when;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.http.MediaType;
 
 // import org.apache.tomcat.util.http.parser.MediaType;
@@ -32,7 +36,6 @@ import com.glc.gmdb.Repository.IMovieRepository;
 import com.glc.gmdb.Repository.IReviewRepo;
 import com.glc.gmdb.Repository.IUserRepo;
 
-
 @AutoConfigureMockMvc
 @WebAppConfiguration
 @SpringBootTest
@@ -47,9 +50,8 @@ class GmdbApplicationTests {
     @Mock
     private IUserRepo reviewerRepository;
 
-    @Mock 
+    @Mock
     private IReviewRepo reviewsRepository;
-
 
     @InjectMocks
     private ReviewerController reviewerController;
@@ -62,50 +64,64 @@ class GmdbApplicationTests {
 
     private JacksonTester<Reviews> jsonReview;
     private JacksonTester<Iterable<Reviews>> jsonReviews;
-    
+
     private JacksonTester<User> jsonReviewer;
     private JacksonTester<Iterable<User>> jsonReviewers;
 
-
     @BeforeEach
-	public void setUp() {
-		JacksonTester.initFields(this, new ObjectMapper());
-		mvc = MockMvcBuilders.standaloneSetup(movieController).build();
-		mvc2 = MockMvcBuilders.standaloneSetup(reviewerController).build();
-	}
-    
+    public void setUp() {
+        JacksonTester.initFields(this, new ObjectMapper());
+        mvc = MockMvcBuilders.standaloneSetup(movieController).build();
+        mvc2 = MockMvcBuilders.standaloneSetup(reviewerController).build();
+    }
 
-	@Test
-	void contextLoads() {
-	}
-// Stories for this project are shown below in order of value, with the highest value listed first.
-    // This microservice will contain the CRUD operations required to interact with the GMDB movie database.
-    // Other functionality (e.g. user authentication) is hosted in other microservices.
+    @Test
+    void contextLoads() {
+    }
+    // Stories for this project are shown below in order of value, with the highest
+    // value listed first.
+    // This microservice will contain the CRUD operations required to interact with
+    // the GMDB movie database.
+    // Other functionality (e.g. user authentication) is hosted in other
+    // microservices.
     //
     // 1. As a user
-    //    I can GET a list of movies from GMDB that includes Movie ID | Movie Title | Year Released | Genre | Runtime
-    //    so that I can see the list of available movies.
+    // I can GET a list of movies from GMDB that includes Movie ID | Movie Title |
+    // Year Released | Genre | Runtime
+    // so that I can see the list of available movies.
 
-    //    so that I can see the list of available movies.
+    // so that I can see the list of available movies.
 
+    // testing getAllMovies
+    // @Test
+    // public void getAllMovies() throws Exception {
+    // Movies movies1 = new Movies("Your name",1999, "Comedy", 150);
+    // Movies movies2 = new Movies("Your name",1999, "Comedy", 150);
 
-    //testing getAllMovies 
+    // List<Movies> addMovies = new ArrayList<>();
+    // addMovies.add(movies1);
+    // addMovies.add(movies2);
+    // when(movieRepository.findAll()).thenReturn( addMovies );
+
+    // mvc.perform(MockMvcRequestBuilders.get("/movies/all"))
+    // .andExpect(content().json(jsonMovies.write(addMovies).getJson()))
+    // .andExpect(status().isOk());
+    // }
+
     @Test
-	public void getAllMovies() throws Exception {
-		Movies movies1 = new Movies("Your name",1999, "Comedy", 150);
-		Movies movies2 = new Movies("Your name",1999, "Comedy", 150);
+    public void getAllMovies() throws Exception {
+        // Arrange
+        Movies movie1 = new Movies("Your name", 1999, "Comedy", 150);
+        Movies movie2 = new Movies("Your name", 1999, "Comedy", 150);
+        List<Movies> expectedMovies = Arrays.asList(movie1, movie2);
 
-        List<Movies> addMovies = new ArrayList<>();
-        addMovies.add(movies1);
-        addMovies.add(movies2);
-        when(movieRepository.findAll()).thenReturn( addMovies );
+        when(movieRepository.findAll()).thenReturn(expectedMovies);
 
+        // Act and Assert
         mvc.perform(MockMvcRequestBuilders.get("/movies/all"))
-                .andExpect()                
-				.andExpect(status().isOk());
-            }
-
-				
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonMovies.write(expectedMovies).getJson()));
+    }
 
     private Object get(String string) {
         return null;
@@ -113,41 +129,92 @@ class GmdbApplicationTests {
 
     //
     // 2. As a user
-    //    I can provide a movie ID and get back the record shown in story 1, plus a list of reviews that contains Review ID | Movie ID | Reviewer ID | Review Text | DateTime last modified
-    //    so that I can read the reviews for a movie.
+    // I can provide a movie ID and get back the record shown in story 1, plus a
+    // list of reviews that contains Review ID | Movie ID | Reviewer ID | Review
+    // Text | DateTime last modified
+    // so that I can read the reviews for a movie.
     //
+
+    // @Test
+    // public void getRecord() throws Exception {
+
+    //     Movies movie1 = new Movies("Your name", 1999, "Comedy", 150);
+    //     Optional<Movies> expected = Optional.ofNullable(movie1);
+    //     when(movieRepository.findById(1L)).thenReturn(expected);
+    //     mvc.perform(MockMvcRequestBuilders.get("/movies/1"))
+    //             // .contentType(MediaType.APPLICATION_JSON)
+
+    //             .andExpect(status().isOk())
+    //             .andExpect(content().json(jsonMovie.write(movie1).getJson()));
+
+    // }
+
+    @Test
+    public void getAllRecord() throws Exception {
+        // Arrange
+        Movies movie1 = new Movies("Your name", 1999, "Comedy", 150);
+        Optional<Movies> expected = Optional.of(movie1);
+        when(movieRepository.findById(1L)).thenReturn(expected);
+
+        // Act and Assert
+        mvc.perform(MockMvcRequestBuilders.get("/movies/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonMovie.write(movie1).getJson()));
+    }
     // 3. As a user
-    //    I can provide a Reviewer ID and get back a record that contains Reivewer ID | Username | Date Joined | Number of Reviews
-    //    so that I can see details about a particular reviewer.
+    // I can provide a Reviewer ID and get back a record that contains Reivewer ID |
+    // Username | Date Joined | Number of Reviews
+    // so that I can see details about a particular reviewer.
+
+    @Test 
+    public void getReviewer()throws Exception{
+
+        Date currDate = new Date(0);
+        User reviewer = new User("Sarah+", "Reviewer", currDate, 2);
+        reviewer.setReviews(new ArrayList<>());
+        when(reviewerRepository.findById(1L)).thenReturn(Optional.of(reviewer));
+        
+        mvc2.perform(
+            (RequestBuilder) ((ContentResultMatchers) get("/Reviewer/1")).contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk())
+        .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+    }
+
     //
     // 4. As a user
-    //    I can register as a reviewer by providing my Username. (Reviewer ID should be autogenerated)
-    //    So that I can start reviewing movies.
+    // I can register as a reviewer by providing my Username. (Reviewer ID should be
+    // autogenerated)
+    // So that I can start reviewing movies.
     //
     // 5. As a reviewer
-    //    I can post a review by providing my reviewer ID, a movie ID and my review text. (Review ID should be autogenerated)
-    //    So that I can share my opinions with others.
+    // I can post a review by providing my reviewer ID, a movie ID and my review
+    // text. (Review ID should be autogenerated)
+    // So that I can share my opinions with others.
     //
     // 6. As a reviewer
-    //    I can delete a review by providing my reviewer ID and a review ID
-    //    So that I can remove reviews I no longer wish to share.
+    // I can delete a review by providing my reviewer ID and a review ID
+    // So that I can remove reviews I no longer wish to share.
     //
     // 7. As a reviewer
-    //    I can update a review by providing my reviewer ID, a movie ID and my review text.
-    //    So that I can modify the opinion I'm sharing with others.
+    // I can update a review by providing my reviewer ID, a movie ID and my review
+    // text.
+    // So that I can modify the opinion I'm sharing with others.
     //
     // 8. As an Admin
-    //    I can add a new movie to the database by providing the data listed in story 1 (Movie ID should be autogenerated)
-    //    so that I can share new movies with the users.
+    // I can add a new movie to the database by providing the data listed in story 1
+    // (Movie ID should be autogenerated)
+    // so that I can share new movies with the users.
     // 9. As an Admin
-    //    I can add update the entry for a movie by providing the data listed in Story 1.
-    //    so that I can correct errors in previously uploaded movie entries.
+    // I can add update the entry for a movie by providing the data listed in Story
+    // 1.
+    // so that I can correct errors in previously uploaded movie entries.
     //
-    //10. As an admin
-    //    I can delete a movie by providing a movie ID
-    //    so that I can remove movies I no longer wish to share.
+    // 10. As an admin
+    // I can delete a movie by providing a movie ID
+    // so that I can remove movies I no longer wish to share.
     //
-    //11. As an admin
-    //    I can impersonate a reviewer and do any of the things they can do
-    //    so that I can help confused reviewers.
+    // 11. As an admin
+    // I can impersonate a reviewer and do any of the things they can do
+    // so that I can help confused reviewers.
 }
