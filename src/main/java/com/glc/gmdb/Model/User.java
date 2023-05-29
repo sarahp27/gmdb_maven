@@ -8,7 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Table;
+//import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 // @AllArgsConstructor
 @Entity
-
+@Table(name = "movieUsers")
 public class User {
 
     @Id
@@ -32,16 +33,14 @@ public class User {
     private String role;
     private int numReview;
 
+    @OneToMany(mappedBy = "reviewer_id")
+    private List<Reviews> reviews;
 
-    @OneToMany(mappedBy = "Reviewer")
-   private List<Reviews> reviews;
-
-   public User(String username, String role, Date dateJoin, int numReview ){
-    this.username = username;
-    this.role=role;
-    this.dateJoin =dateJoin;
-    this.numReview = numReview;
-   }
-
+    public User(String username, String role, Date dateJoin, int numReview) {
+        this.username = username;
+        this.role = role;
+        this.dateJoin = dateJoin;
+        this.numReview = numReview;
+    }
 
 }

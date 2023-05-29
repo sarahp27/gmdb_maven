@@ -1,22 +1,44 @@
 package com.glc.gmdb;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.http.MediaType;
+
+// import org.apache.tomcat.util.http.parser.MediaType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.ContentResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glc.gmdb.Controller.MovieController;
 import com.glc.gmdb.Controller.ReviewerController;
+import com.glc.gmdb.Model.Movies;
+import com.glc.gmdb.Model.Reviews;
+import com.glc.gmdb.Model.User;
 import com.glc.gmdb.Repository.IMovieRepository;
 import com.glc.gmdb.Repository.IReviewRepo;
 import com.glc.gmdb.Repository.IUserRepo;
 
-// import com.glc.gmdb.Model.Movie;
 
+@AutoConfigureMockMvc
+@WebAppConfiguration
 @SpringBootTest
 class GmdbApplicationTests {
 
+    private MockMvc mvc;
     private MockMvc mvc2;
 
     @Mock
@@ -35,6 +57,23 @@ class GmdbApplicationTests {
     @InjectMocks
     private MovieController movieController;
 
+    private JacksonTester<Movies> jsonMovie;
+    private JacksonTester<List<Movies>> jsonMovies;
+
+    private JacksonTester<Reviews> jsonReview;
+    private JacksonTester<Iterable<Reviews>> jsonReviews;
+    
+    private JacksonTester<User> jsonReviewer;
+    private JacksonTester<Iterable<User>> jsonReviewers;
+
+
+    @BeforeEach
+	public void setUp() {
+		JacksonTester.initFields(this, new ObjectMapper());
+		mvc = MockMvcBuilders.standaloneSetup(movieController).build();
+		mvc2 = MockMvcBuilders.standaloneSetup(reviewerController).build();
+	}
+    
 
 	@Test
 	void contextLoads() {
@@ -46,6 +85,32 @@ class GmdbApplicationTests {
     // 1. As a user
     //    I can GET a list of movies from GMDB that includes Movie ID | Movie Title | Year Released | Genre | Runtime
     //    so that I can see the list of available movies.
+
+    //    so that I can see the list of available movies.
+
+
+    //testing getAllMovies 
+    @Test
+	public void getAllMovies() throws Exception {
+		Movies movies1 = new Movies("Your name",1999, "Comedy", 150);
+		Movies movies2 = new Movies("Your name",1999, "Comedy", 150);
+
+        List<Movies> addMovies = new ArrayList<>();
+        addMovies.add(movies1);
+        addMovies.add(movies2);
+        when(movieRepository.findAll()).thenReturn( addMovies );
+
+        mvc.perform(MockMvcRequestBuilders.get("/movies/all"))
+                .andExpect()                
+				.andExpect(status().isOk());
+            }
+
+				
+
+    private Object get(String string) {
+        return null;
+    }
+
     //
     // 2. As a user
     //    I can provide a movie ID and get back the record shown in story 1, plus a list of reviews that contains Review ID | Movie ID | Reviewer ID | Review Text | DateTime last modified

@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +23,9 @@ import lombok.Setter;
 @Table(name = "reviews")
 public class Reviews {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long  id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name ="movie_id")
@@ -35,14 +34,15 @@ public class Reviews {
 
     @ManyToOne
     @JoinColumn(name="reviewer_id")
-    private User reviewer_id; 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private User reviewer_id;
 
     private String review_text;
     private Date date_time;
 
-    public Reviews(String review_text, Date date_time){
-        this.review_text=review_text;
-        this.date_time=date_time;
+    public Reviews(String review_text, Date date_time) {
+        this.review_text = review_text;
+        this.date_time = date_time;
     }
 
     public void setReviewer(User user) {
@@ -54,5 +54,7 @@ public class Reviews {
     public void setDate_time(String string) {
     }
 
-  
+    public void setMovie_id(Movies movies) {
+    }
+
 }

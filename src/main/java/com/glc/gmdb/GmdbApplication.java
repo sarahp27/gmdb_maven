@@ -8,8 +8,9 @@ public class GmdbApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GmdbApplication.class, args);
-        System.out.println("its work");
+        System.out.println("its working");
 	}
+    
 	// Stories for this project are shown below in order of value, with the highest value listed first.
     // This microservice will contain the CRUD operations required to interact with the GMDB movie database.
     // Other functionality (e.g. user authentication) is hosted in other microservices.

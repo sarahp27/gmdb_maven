@@ -12,29 +12,32 @@ import org.springframework.web.bind.annotation.RestController;
 import com.glc.gmdb.Model.Movies;
 import com.glc.gmdb.Repository.IMovieRepository;
 
-
-
 @RestController
 @RequestMapping("/movies")
-public class MovieController  {
+public class MovieController {
 
-@Autowired
-   private  IMovieRepository movieRepo;
+    @Autowired
+    private IMovieRepository movieRepo;
 
-  
-// @PostMapping("/post")
-// public void postMethodName(@RequestBody  Movies movie) {
-//        movieRepo.save(movie);
-// }
+    // @PostMapping("/post")
+    // public void postMethodName(@RequestBody Movies movie) {
+    // movieRepo.save(movie);
+    // }
 
-@GetMapping("/all")
-    public List<Movies> getAllMovies(){
+    @GetMapping("")
+    public String getAllMovi() {
+        return "(List<Movies>) movieRepo.findAll();";
+    }
+
+
+    @GetMapping("/all")
+    public List<Movies> getAllMovies() {
         return (List<Movies>) movieRepo.findAll();
     }
-     
-     @GetMapping("/{id}")
-    public ResponseEntity<Movies> getMovie(@PathVariable Long id){
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Movies> getMovie(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.movieRepo.findById(id).get());
     }
-    
+
 }

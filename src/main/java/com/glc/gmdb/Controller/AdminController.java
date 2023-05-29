@@ -43,11 +43,17 @@ public class AdminController {
         return ResponseEntity.ok().body(this.adminRepository.save(reviewer));
     }
 
-    @PostMapping("/Movie/add")
-    public ResponseEntity<Movies> addMovie(@RequestBody Movies movies){   
-        movies.setReviews(new ArrayList<>());
-        return ResponseEntity.ok().body(movieRepo.save(movies));
-    }
+
+
+
+    // @PostMapping("/Movie/add")
+    // public ResponseEntity<Movies> addMovie(@RequestBody Movies movies){   
+    //     movies.setReviews(new ArrayList<>());
+    //     return ResponseEntity.ok().body(movieRepo.save(movies));
+    // }
+
+
+
 
      @PutMapping("/Movie/{id}/update")
     public ResponseEntity<Movies> updateMovie(@PathVariable Long id, @RequestBody Movies movies){ 
