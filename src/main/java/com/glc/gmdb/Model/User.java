@@ -42,5 +42,4 @@ public class User {
         this.dateJoin = dateJoin;
         this.numReview = numReview;
     }
-
 }

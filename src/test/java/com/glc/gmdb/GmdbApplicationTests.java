@@ -2,6 +2,7 @@ package com.glc.gmdb;
 
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,12 +16,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.ContentResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -58,15 +62,18 @@ class GmdbApplicationTests {
 
     @InjectMocks
     private MovieController movieController;
-
+    // @Autowired
     private JacksonTester<Movies> jsonMovie;
+    // @Autowired
     private JacksonTester<List<Movies>> jsonMovies;
-
+    // @Autowired
     private JacksonTester<Reviews> jsonReview;
-    private JacksonTester<Iterable<Reviews>> jsonReviews;
-
+    // @Autowired
+    private JacksonTester<List<Reviews>> jsonReviews;
+    // @Autowired
     private JacksonTester<User> jsonReviewer;
-    private JacksonTester<Iterable<User>> jsonReviewers;
+    // @Autowired
+    private JacksonTester<List<User>> jsonReviewers;
 
     @BeforeEach
     public void setUp() {
@@ -108,6 +115,7 @@ class GmdbApplicationTests {
     // .andExpect(status().isOk());
     // }
 
+    // Test 1
     @Test
     public void getAllMovies() throws Exception {
         // Arrange
@@ -138,16 +146,18 @@ class GmdbApplicationTests {
     // @Test
     // public void getRecord() throws Exception {
 
-    //     Movies movie1 = new Movies("Your name", 1999, "Comedy", 150);
-    //     Optional<Movies> expected = Optional.ofNullable(movie1);
-    //     when(movieRepository.findById(1L)).thenReturn(expected);
-    //     mvc.perform(MockMvcRequestBuilders.get("/movies/1"))
-    //             // .contentType(MediaType.APPLICATION_JSON)
+    // Movies movie1 = new Movies("Your name", 1999, "Comedy", 150);
+    // Optional<Movies> expected = Optional.ofNullable(movie1);
+    // when(movieRepository.findById(1L)).thenReturn(expected);
+    // mvc.perform(MockMvcRequestBuilders.get("/movies/1"))
+    // // .contentType(MediaType.APPLICATION_JSON)
 
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().json(jsonMovie.write(movie1).getJson()));
+    // .andExpect(status().isOk())
+    // .andExpect(content().json(jsonMovie.write(movie1).getJson()));
 
     // }
+
+    // test 2
 
     @Test
     public void getAllRecord() throws Exception {
@@ -166,19 +176,37 @@ class GmdbApplicationTests {
     // Username | Date Joined | Number of Reviews
     // so that I can see details about a particular reviewer.
 
-    @Test 
-    public void getReviewer()throws Exception{
+    // test 3
 
+    // @Test
+    // public void getReviewer()throws Exception{
+
+    // Date currDate = new Date(0);
+    // User reviewer = new User("Sarah", "Reviewer", currDate, 2);
+    // reviewer.setReviews(new ArrayList<>());
+    // when(reviewerRepository.findById(1L)).thenReturn(Optional.of(reviewer));
+
+    // mvc2.perform(
+    // MockMvcRequestBuilders.get("/Reviewers/1")
+    // // (RequestBuilder) ((ContentResultMatchers)
+    // get("/Reviewer/1")).contentType(MediaType.APPLICATION_JSON)
+    // )
+    // .andExpect(status().isOk())
+    // .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+    // }
+
+    @Test
+    public void getReviewer() throws Exception {
+        // Arrange
         Date currDate = new Date(0);
-        User reviewer = new User("Sarah+", "Reviewer", currDate, 2);
+        User reviewer = new User("Sarah", "Reviewer", currDate, 2);
         reviewer.setReviews(new ArrayList<>());
         when(reviewerRepository.findById(1L)).thenReturn(Optional.of(reviewer));
-        
-        mvc2.perform(
-            (RequestBuilder) ((ContentResultMatchers) get("/Reviewer/1")).contentType(MediaType.APPLICATION_JSON)
-        )
-        .andExpect(status().isOk())
-        .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+
+        // Act and Assert
+        mvc2.perform(MockMvcRequestBuilders.get("/Reviewers/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
     }
 
     //
@@ -186,6 +214,50 @@ class GmdbApplicationTests {
     // I can register as a reviewer by providing my Username. (Reviewer ID should be
     // autogenerated)
     // So that I can start reviewing movies.
+
+    // @Test
+    // public void registerUser() throws IOException, Exception{
+    // User reviewer = new User("Sarah", "Reviewer", new Date(0), 2);
+    // when(reviewerRepository.save(reviewer)).thenReturn(reviewer);
+    // reviewer.setReviews(new ArrayList<>());
+    // System.out.println(new Date(0));
+    // mvc2.perform(MockMvcRequestBuilders.post("/Reviewers/Register"))
+    // // .contentType(MediaType.APPLICATION_JSON)
+    // // .andExpect(status().isOk())
+    // .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+
+    // }
+
+    @Test 
+    public void registerUser() throws Exception{
+        User reviewer = new User("Sarah", "", new Date(0), 2);
+        reviewer.setReviews(new ArrayList<>());
+        when(reviewerRepository.save(reviewer)).thenReturn(reviewer);
+        System.out.println(new Date(0));
+
+        mvc2.perform(MockMvcRequestBuilders.post("/Reviewers/Register")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(jsonReviewer.write(reviewer).getJson()))
+        .andExpect(status().isOk())
+        .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+    }
+
+    // @Test
+    // public void registerUser() throws IOException, Exception {
+    //     User reviewer = new User("Sarah", "Reviewer", new Date(0), 2);
+    //     when(reviewerRepository.save(reviewer)).thenReturn(reviewer);
+    //     reviewer.setReviews(new ArrayList<>());
+    //     System.out.println(new Date(0));
+    //     ((MockHttpServletRequestBuilder) mvc2.perform(post("/Reviewers/Register")))
+    //             .contentType(MediaType.APPLICATION_JSON))
+    //             .andExpect(status().isOk())
+    //             .andExpect(content().json(jsonReviewer.write(reviewer).getJson()));
+    // }
+
+    private MockHttpServletRequestBuilder post(String string) {
+        return null;
+    }
+
     //
     // 5. As a reviewer
     // I can post a review by providing my reviewer ID, a movie ID and my review

@@ -2,6 +2,7 @@ package com.glc.gmdb.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import com.glc.gmdb.Model.Reviews;
@@ -37,7 +39,7 @@ public class ReviewerController {
     //    reviewer = reviewerRepository.findById(id);
         
 
-    
+    @GetMapping("/{id}")
     public ResponseEntity<User> getReviewer(@PathVariable Long id) {
         Optional<User> reviewer = reviewerRepository.findById(id);
         if (reviewer.isPresent() && reviewer.get().getRole().equalsIgnoreCase("Reviewer")) {
@@ -51,6 +53,16 @@ public class ReviewerController {
     public void postReview(@RequestBody User reviews){
     reviewerRepository.save(reviews);
     }
+
+
+     @PostMapping("/Register")
+    public ResponseEntity<User> registerReviewer(@RequestBody User reviewer){
+        reviewer.setRole("Reviewer");
+        reviewer.setReviews(new ArrayList<>());
+        reviewer.setDateJoin(new Date(0));
+        return ResponseEntity.ok().body(this.reviewerRepository.save(reviewer));
+    }
+
 
     // @PostMapping("/{reviewerId}/Movie/{movieId}/Review")
     // public ResponseEntity<Reviews> postReview(@PathVariable Long reviewerId){
